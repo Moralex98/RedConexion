@@ -2,6 +2,7 @@
 package Views;
 
 import Controllers.LoginController;
+import Models.TextPrompt;
 
 public class LoginView extends javax.swing.JFrame {
 LoginController loginController;
@@ -9,6 +10,7 @@ LoginController loginController;
     public LoginView() {
         initComponents();
         loginController = new LoginController(this);
+        TextPrompt password = new TextPrompt("*********",txtPassword);
         this.setLocationRelativeTo(this);
     }
 

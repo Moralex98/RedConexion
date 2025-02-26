@@ -4,7 +4,7 @@ package Controllers;
 import Models.LoginVerifier;
 import Views.Load;
 import Views.LoginView;
-import Views.MenuView;
+import Views.PrincipalView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -22,6 +22,7 @@ public class LoginController implements ActionListener, KeyListener{
         loginVerifier = new LoginVerifier();
         this.loginView.btnEnter.addActionListener(this);
         this.loginView.chkPassword.addActionListener(this);
+        this.loginView.txtPassword.addKeyListener(this);
         
     }
     //ocultar ventana
@@ -94,8 +95,8 @@ public class LoginController implements ActionListener, KeyListener{
             }
             load.dispose();
             loginView.dispose();
-            MenuView menu = new MenuView();
-            menu.setVisible(true);
+            PrincipalView principal = new PrincipalView();
+            principal.setVisible(true);
         }).start();
     }
 }

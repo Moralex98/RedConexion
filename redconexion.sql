@@ -15,7 +15,9 @@ CREATE TABLE usuarios (
 
 --encriptar en codigo con sha2 no es muy buena
 INSERT INTO usuarios (username, password_hash, rol) 
-VALUES ('admin', SHA2('redconexion', 256), 'admin');
+VALUES ('admin', '$2a$12$w5JyVO9cgC6eu/zeFhmuqOrHlDnP67TvrO85TCNvlv8GcODztROru', 'admin');
+
+--redconexion: contraseña real
 
 CREATE TABLE productgranel (
     id_gran INT AUTO_INCREMENT PRIMARY KEY,
