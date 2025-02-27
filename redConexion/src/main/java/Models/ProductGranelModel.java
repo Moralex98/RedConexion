@@ -6,8 +6,8 @@ import lombok.Data;
 @Data
 public class ProductGranelModel {
     private int idProductGra;
-    private String nombre;
+    private String nameGra;
     private int stock;
-    private float precio;
+    private float price;
     
 }

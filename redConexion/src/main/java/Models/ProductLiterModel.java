@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class ProductLiterModel {
     private int idProductLit;
-    private String nombre;
+    private String nameLit;
     private int stock;
-    private float precio;
+    private float price;
 }

@@ -1,8 +1,8 @@
-
 package Models.Dao;
 
 import Models.Conection;
 import Models.ProductGranelModel;
+import Models.ProductLiterModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -10,9 +10,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
-public class ProductGraDao implements Crud{
-    private ProductGranelModel productGranelModel;
+public class ProductLitDao implements Crud{
+  private ProductLiterModel productLiterModel;
     Conection conection = new Conection();
 
     
@@ -21,36 +20,36 @@ public class ProductGraDao implements Crud{
         conection.connectDatabase();
         try {
             conection.connection.createStatement().execute(
-                    "INSERT INTO VALUES productgra VALUES("
-                    +productGranelModel.getIdProductGra()+",'"
-                    +productGranelModel.getNameGra()+"',"
-                    +productGranelModel.getStock()+","
-                    +productGranelModel.getPrice()+")"
+                    "INSERT INTO VALUES productliter VALUES("
+                    +productLiterModel.getIdProductLit()+",'"
+                    +productLiterModel.getNameLit()+"',"
+                    +productLiterModel.getStock()+","
+                    +productLiterModel.getPrice()+")"
             );
         } catch (SQLException ex) {
             Logger.getLogger(ProductGraDao.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } 
     }
 
     @Override
-    public ArrayList<ProductGranelModel> Read() {
-        ArrayList<ProductGranelModel>productGranel = new ArrayList<>();
-        ProductGranelModel product;
+    public ArrayList<ProductLiterModel> Read() {
+        ArrayList<ProductLiterModel>productLiter = new ArrayList<>();
+        ProductLiterModel product;
         conection.connectDatabase();
         try {
             ResultSet result = conection.connection.createStatement().executeQuery("SELECT * FROM productgra");
             while(result.next()) {
-                product = new ProductGranelModel();
-                product.setIdProductGra(result.getInt("id_gran"));
-                product.setNameGra(result.getString("nombre"));
+                product = new ProductLiterModel();
+                product.setIdProductLit(result.getInt("id_lit"));
+                product.setNameLit(result.getString("nombre"));
                 product.setStock(result.getInt("stock"));
                 product.setPrice(result.getFloat("Precio"));
-                productGranel.add(product);
+                productLiter.add(product);
             }
         }catch (SQLException ex) {
             Logger.getLogger(ProductGraDao.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return productGranel;
+        return productLiter;
     }
 
     @Override
@@ -59,28 +58,27 @@ public class ProductGraDao implements Crud{
         Statement stmt = null;
         
         try {
-            if (productGranelModel.getIdProductGra() != 0 && (productGranelModel.getNameGra() != null || (productGranelModel.getPrice() != 0 || (productGranelModel.getStock()) != 0))) {
-                StringBuilder query = new StringBuilder("UPDATE productgra SET ");
+            if (productLiterModel.getIdProductLit() != 0 && (productLiterModel.getNameLit() != null || (productLiterModel.getPrice() != 0 || (productLiterModel.getStock()) != 0))) {
+                StringBuilder query = new StringBuilder("UPDATE productliter SET ");
                  
                 boolean firstField = true;
                 
-                if (productGranelModel.getNameGra() != null) {
-                    query.append("nombre = '").append(productGranelModel.getNameGra()).append("'");
+                if (productLiterModel.getNameLit() != null) {
+                    query.append("nombre = '").append(productLiterModel.getNameLit()).append("'");
                     firstField = false;
                 }
                 
-                if (productGranelModel.getStock() != 0) {
-                    if (!firstField) query.append(", ");
-                    query.append("stock = '").append(productGranelModel.getStock()).append("'");
+                if (productLiterModel.getStock() != 0) {
+                    query.append("stock = '").append(productLiterModel.getStock()).append("'");
                     firstField = false;
                 }
               
-                if (productGranelModel.getPrice() != 0) {
-                    if (!firstField) query.append(", ");
-                    query.append("precio = '").append((float) productGranelModel.getPrice()).append("'");
+                if (productLiterModel.getPrice() != 0) {
+                    query.append("precio = '").append((float) productLiterModel.getPrice()).append("'");
+                    firstField = false;
                 }
                 
-                query.append(" Where id_gran = ").append(productGranelModel.getIdProductGra());
+                query.append(" Where id_lit = ").append(productLiterModel.getIdProductLit());
                 
                 stmt = conection.connection.createStatement();
                 stmt.executeUpdate(query.toString());
@@ -105,8 +103,8 @@ public class ProductGraDao implements Crud{
         conection.connectDatabase();
         Statement stmt= null;
         try {
-            if (productGranelModel.getIdProductGra() != 0) {
-                String query = "DELETE FROM productgra WHERE id_gran = " + productGranelModel.getIdProductGra();
+            if (productLiterModel.getIdProductLit() != 0) {
+                String query = "DELETE FROM productgra WHERE id_gran = " + productLiterModel.getIdProductLit();
                 
                 stmt = conection.connection.createStatement();
                 int rowsAffected = stmt.executeUpdate(query);
@@ -129,5 +127,5 @@ public class ProductGraDao implements Crud{
                 Logger.getLogger(ProductGranelModel.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }
+    }  
 }
