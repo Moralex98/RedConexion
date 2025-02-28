@@ -20,6 +20,9 @@ public class PrincipalController implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (this.principalView.btnNewSale == e.getSource()) {
+            
+        }  
     }
     
 }
