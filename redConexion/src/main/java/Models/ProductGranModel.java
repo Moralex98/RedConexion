@@ -4,7 +4,7 @@ package Models;
 import lombok.Data;
 
 @Data
-public class ProductGranelModel {
+public class ProductGranModel {
     private int idProductGra;
     private String nameGra;
     private int stock;

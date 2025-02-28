@@ -1,8 +1,8 @@
 package Models.Dao;
 
 import Models.Conection;
-import Models.ProductGranelModel;
-import Models.ProductLiterModel;
+import Models.ProductGranModel;
+import Models.ProductLitModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ProductLitDao implements Crud{
-  private ProductLiterModel productLiterModel;
+  private ProductLitModel productLiterModel;
     Conection conection = new Conection();
 
     
@@ -27,19 +27,19 @@ public class ProductLitDao implements Crud{
                     +productLiterModel.getPrice()+")"
             );
         } catch (SQLException ex) {
-            Logger.getLogger(ProductGraDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProductGranDao.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }
 
     @Override
-    public ArrayList<ProductLiterModel> Read() {
-        ArrayList<ProductLiterModel>productLiter = new ArrayList<>();
-        ProductLiterModel product;
+    public ArrayList<ProductLitModel> Read() {
+        ArrayList<ProductLitModel>productLiter = new ArrayList<>();
+        ProductLitModel product;
         conection.connectDatabase();
         try {
             ResultSet result = conection.connection.createStatement().executeQuery("SELECT * FROM productgra");
             while(result.next()) {
-                product = new ProductLiterModel();
+                product = new ProductLitModel();
                 product.setIdProductLit(result.getInt("id_lit"));
                 product.setNameLit(result.getString("nombre"));
                 product.setStock(result.getInt("stock"));
@@ -47,7 +47,7 @@ public class ProductLitDao implements Crud{
                 productLiter.add(product);
             }
         }catch (SQLException ex) {
-            Logger.getLogger(ProductGraDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProductGranDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return productLiter;
     }
@@ -69,13 +69,14 @@ public class ProductLitDao implements Crud{
                 }
                 
                 if (productLiterModel.getStock() != 0) {
+                    if (!firstField) query.append(", ");
                     query.append("stock = '").append(productLiterModel.getStock()).append("'");
                     firstField = false;
                 }
               
                 if (productLiterModel.getPrice() != 0) {
+                    if (!firstField) query.append(", ");
                     query.append("precio = '").append((float) productLiterModel.getPrice()).append("'");
-                    firstField = false;
                 }
                 
                 query.append(" Where id_lit = ").append(productLiterModel.getIdProductLit());
@@ -87,13 +88,13 @@ public class ProductLitDao implements Crud{
                 System.err.println("Se requiere al menos un campo adicional para actualizar.");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(ProductGraDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProductGranDao.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 if (stmt != null) stmt.close();
                     if (conection.connection != null) conection.connection.close();
             } catch (SQLException ex) {
-                Logger.getLogger(ProductGranelModel.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ProductGranModel.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -118,13 +119,13 @@ public class ProductLitDao implements Crud{
                 System.err.println("El ID es necesario para eliminar un registro.");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(ProductGraDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProductGranDao.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 if (stmt != null) stmt.close();
                     if (conection.connection != null) conection.connection.close();
             } catch (SQLException ex) {
-                Logger.getLogger(ProductGranelModel.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ProductGranModel.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }  

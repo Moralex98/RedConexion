@@ -2,7 +2,7 @@
 package Models.Dao;
 
 import Models.Conection;
-import Models.ProductGranelModel;
+import Models.ProductGranModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -11,8 +11,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class ProductGraDao implements Crud{
-    private ProductGranelModel productGranelModel;
+public class ProductGranDao implements Crud{
+    private ProductGranModel productGranelModel;
     Conection conection = new Conection();
 
     
@@ -28,19 +28,19 @@ public class ProductGraDao implements Crud{
                     +productGranelModel.getPrice()+")"
             );
         } catch (SQLException ex) {
-            Logger.getLogger(ProductGraDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProductGranDao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @Override
-    public ArrayList<ProductGranelModel> Read() {
-        ArrayList<ProductGranelModel>productGranel = new ArrayList<>();
-        ProductGranelModel product;
+    public ArrayList<ProductGranModel> Read() {
+        ArrayList<ProductGranModel>productGranel = new ArrayList<>();
+        ProductGranModel product;
         conection.connectDatabase();
         try {
             ResultSet result = conection.connection.createStatement().executeQuery("SELECT * FROM productgra");
             while(result.next()) {
-                product = new ProductGranelModel();
+                product = new ProductGranModel();
                 product.setIdProductGra(result.getInt("id_gran"));
                 product.setNameGra(result.getString("nombre"));
                 product.setStock(result.getInt("stock"));
@@ -48,7 +48,7 @@ public class ProductGraDao implements Crud{
                 productGranel.add(product);
             }
         }catch (SQLException ex) {
-            Logger.getLogger(ProductGraDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProductGranDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return productGranel;
     }
@@ -89,13 +89,13 @@ public class ProductGraDao implements Crud{
                 System.err.println("Se requiere al menos un campo adicional para actualizar.");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(ProductGraDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProductGranDao.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 if (stmt != null) stmt.close();
                     if (conection.connection != null) conection.connection.close();
             } catch (SQLException ex) {
-                Logger.getLogger(ProductGranelModel.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ProductGranModel.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -120,13 +120,13 @@ public class ProductGraDao implements Crud{
                 System.err.println("El ID es necesario para eliminar un registro.");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(ProductGraDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProductGranDao.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 if (stmt != null) stmt.close();
                     if (conection.connection != null) conection.connection.close();
             } catch (SQLException ex) {
-                Logger.getLogger(ProductGranelModel.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ProductGranModel.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

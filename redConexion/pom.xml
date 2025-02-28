@@ -70,7 +70,7 @@
                 </execution>
             </executions>
             <configuration>
-                <mainClass>Views.PrincipalView</mainClass>
+                <mainClass>Views.LoginView</mainClass>
             </configuration>
         </plugin>
     </plugins>
