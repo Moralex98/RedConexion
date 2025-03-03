@@ -1,6 +1,7 @@
 
 package Views;
 
+import Controllers.PrincipalController;
 import java.awt.BorderLayout;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -8,12 +9,14 @@ import java.util.Locale;
 import javax.swing.JPanel;
 
 public class PrincipalView extends javax.swing.JFrame {
-
+    PrincipalController principalController;
 
     public PrincipalView() {
         initComponents();
+        principalController = new PrincipalController(this);
         SetDate();
         this.setLocationRelativeTo(this);
+        content.setLayout(new BorderLayout());
         SaleView saleView = new SaleView();
         showJpanel(saleView);
     }
@@ -24,15 +27,16 @@ public class PrincipalView extends javax.swing.JFrame {
         dateText.setText(now.format(DateTimeFormatter.ofPattern("'Hoy es' EEEE dd 'de' MMMM 'del' yyyy",spanishLocale)));
     }
 
-        public void showJpanel(JPanel p){
+    public void showJpanel(JPanel p) {
         p.setSize(1360, 560);
         p.setLocation(0, 0);
-        
+
         content.removeAll();
         content.add(p, BorderLayout.CENTER);
-        content.revalidate();
-        content.repaint();
+        content.revalidate(); // Asegurar que los cambios se reflejan
+        content.repaint();    // Forzar el repintado de la interfaz
     }
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

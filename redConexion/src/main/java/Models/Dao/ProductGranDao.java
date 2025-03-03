@@ -3,6 +3,8 @@ package Models.Dao;
 
 import Models.Conection;
 import Models.ProductGranModel;
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -20,48 +22,61 @@ public class ProductGranDao implements Crud{
     public void Create() {
         conection.connectDatabase();
         try {
-            conection.connection.createStatement().execute(
-                    "INSERT INTO VALUES productgra VALUES("
-                    +productGranelModel.getIdProductGra()+",'"
-                    +productGranelModel.getNameGra()+"',"
-                    +productGranelModel.getStock()+","
-                    +productGranelModel.getPrice()+")"
-            );
+            String query = "INSERT INTO productgranel (id_gran, nombre, stock, precio) VALUES (?, ?, ?, ?)";
+
+            PreparedStatement preparedStatement = conection.connection.prepareStatement(query);
+            preparedStatement.setInt(1, productGranelModel.getIdProductGra());
+            preparedStatement.setString(2, productGranelModel.getNameGra());
+            preparedStatement.setInt(3, productGranelModel.getStock());
+            preparedStatement.setBigDecimal(4, productGranelModel.getPrice());
+
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
         } catch (SQLException ex) {
             Logger.getLogger(ProductGranDao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+
     @Override
     public ArrayList<ProductGranModel> Read() {
-        ArrayList<ProductGranModel>productGranel = new ArrayList<>();
+        ArrayList<ProductGranModel> productGranel = new ArrayList<>();
         ProductGranModel product;
         conection.connectDatabase();
         try {
-            ResultSet result = conection.connection.createStatement().executeQuery("SELECT * FROM productgra");
-            while(result.next()) {
+            ResultSet result = conection.connection.createStatement().executeQuery("SELECT * FROM productgranel");
+            while (result.next()) {
                 product = new ProductGranModel();
                 product.setIdProductGra(result.getInt("id_gran"));
                 product.setNameGra(result.getString("nombre"));
                 product.setStock(result.getInt("stock"));
-                product.setPrice(result.getFloat("Precio"));
+                product.setPrice(result.getBigDecimal("precio")); // Uso de BigDecimal
                 productGranel.add(product);
             }
-        }catch (SQLException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(ProductGranDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (conection.connection != null) conection.connection.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ProductGranDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return productGranel;
     }
-
+    
     @Override
     public void Update() {
         conection.connectDatabase();
         Statement stmt = null;
         
         try {
-            if (productGranelModel.getIdProductGra() != 0 && (productGranelModel.getNameGra() != null || (productGranelModel.getPrice() != 0 || (productGranelModel.getStock()) != 0))) {
+            if (productGranelModel.getIdProductGra() != 0 && 
+               (productGranelModel.getNameGra() != null || 
+               productGranelModel.getStock() != 0 || 
+               productGranelModel.getPrice().compareTo(BigDecimal.ZERO) != 0)) {
+
                 StringBuilder query = new StringBuilder("UPDATE productgra SET ");
-                 
                 boolean firstField = true;
                 
                 if (productGranelModel.getNameGra() != null) {
@@ -71,21 +86,21 @@ public class ProductGranDao implements Crud{
                 
                 if (productGranelModel.getStock() != 0) {
                     if (!firstField) query.append(", ");
-                    query.append("stock = '").append(productGranelModel.getStock()).append("'");
+                    query.append("stock = ").append(productGranelModel.getStock());
                     firstField = false;
                 }
               
-                if (productGranelModel.getPrice() != 0) {
+                if (productGranelModel.getPrice().compareTo(BigDecimal.ZERO) != 0) {
                     if (!firstField) query.append(", ");
-                    query.append("precio = '").append((float) productGranelModel.getPrice()).append("'");
+                    query.append("precio = ").append(productGranelModel.getPrice().toPlainString());
                 }
                 
-                query.append(" Where id_gran = ").append(productGranelModel.getIdProductGra());
+                query.append(" WHERE id_gran = ").append(productGranelModel.getIdProductGra());
                 
                 stmt = conection.connection.createStatement();
                 stmt.executeUpdate(query.toString());
-                System.out.println("Actualizacion exitosa");
-            }else {
+                System.out.println("Actualización exitosa");
+            } else {
                 System.err.println("Se requiere al menos un campo adicional para actualizar.");
             }
         } catch (SQLException ex) {
@@ -93,9 +108,9 @@ public class ProductGranDao implements Crud{
         } finally {
             try {
                 if (stmt != null) stmt.close();
-                    if (conection.connection != null) conection.connection.close();
+                if (conection.connection != null) conection.connection.close();
             } catch (SQLException ex) {
-                Logger.getLogger(ProductGranModel.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ProductGranDao.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -130,4 +145,31 @@ public class ProductGranDao implements Crud{
             }
         }
     }
+
+    public ProductGranModel getProductGranelModel() {
+        return productGranelModel;
+    }
+
+    public void setProductGranelModel(ProductGranModel productGranelModel) {
+        this.productGranelModel = productGranelModel;
+    }
+    
+    public boolean exists(String id) {
+    try {
+        String query = "SELECT COUNT(*) FROM productgranel WHERE id_gran = ?";
+        PreparedStatement ps = conection.connection.prepareStatement(query);
+        ps.setString(1, id);
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next() && rs.getInt(1) > 0) {
+            return true; // Ya existe
+        }
+    } catch (SQLException ex) {
+        Logger.getLogger(ProductGranDao.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    return false; // No existe
+}
+
+    
+    
 }

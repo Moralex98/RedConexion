@@ -1,4 +1,3 @@
-Views/PrincipalView$3.class
 Models/Conection.class
 Models/LoginVerifier.class
 Views/SaleView.class
@@ -6,12 +5,8 @@ Views/PrincipalView.class
 Views/LoginView.class
 Views/ProductLitView.class
 Views/LoginView$1.class
-Views/PrincipalView$2.class
 Models/SaleModel.class
-Views/PrincipalView1.class
-Views/ProductGranView$1.class
 Models/ProductGranModel.class
-Views/PrincipalView1$1.class
 Views/ProductGranView.class
 Views/PrincipalView$1.class
 Models/Dao/ProductGranDao.class
@@ -28,4 +23,3 @@ Models/TextPrompt$Show.class
 Models/TextPrompt.class
 Models/ProductLitModel.class
 Controllers/PrincipalController.class
-Views/PrincipalView$4.class
