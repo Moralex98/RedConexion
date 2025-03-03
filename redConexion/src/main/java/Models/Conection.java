@@ -3,10 +3,13 @@ package Models;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Conection {
-    public Connection connection = null;
+    private Connection connection = null;
     private boolean isConnected = false;
+    private static final Logger LOGGER = Logger.getLogger(Conection.class.getName());
 
     public Connection getConnection() {
         return connection;
@@ -20,9 +23,11 @@ public class Conection {
                     "root", "FreddyMora"); // Usuario y contraseña
 
             isConnected = connection.isValid(50000);
-            System.out.println("Conexión exitosa");
+            if (isConnected) {
+                LOGGER.log(Level.INFO, "🔗 Conexión a la base de datos establecida correctamente.");
+            }
         } catch (ClassNotFoundException | SQLException ex) {
-            System.err.println("Error en la conexión: " + ex.getMessage());
+            LOGGER.log(Level.SEVERE, "❌ Error al conectar con la base de datos: {0}", ex.getMessage());
             isConnected = false;
         }
         return isConnected;
@@ -32,10 +37,10 @@ public class Conection {
         try {
             if (connection != null) {
                 connection.close();
-                System.out.println("Conexión cerrada");
+                LOGGER.log(Level.INFO, "🔒 Conexión a la base de datos cerrada correctamente.");
             }
         } catch (SQLException ex) {
-            System.err.println("Error al cerrar la conexión: " + ex.getMessage());
+            LOGGER.log(Level.SEVERE, "⚠️ Error al cerrar la conexión: {0}", ex.getMessage());
         }
     }
 }

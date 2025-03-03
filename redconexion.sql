@@ -20,7 +20,7 @@ VALUES ('admin', '$2a$12$w5JyVO9cgC6eu/zeFhmuqOrHlDnP67TvrO85TCNvlv8GcODztROru',
 --redconexion: contraseña real
 
 CREATE TABLE productgranel (
-    id_gran INT AUTO_INCREMENT PRIMARY KEY,
+    id_gran VARCHAR(25) PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     stock INT NOT NULL,
     precio DECIMAL(10,2) NOT NULL

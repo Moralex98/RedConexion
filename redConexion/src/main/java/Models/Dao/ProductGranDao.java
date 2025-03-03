@@ -20,23 +20,32 @@ public class ProductGranDao implements Crud{
     
     @Override
     public void Create() {
-        conection.connectDatabase();
+        conection.connectDatabase(); // Abre la conexión
+        PreparedStatement preparedStatement = null;
+
         try {
             String query = "INSERT INTO productgranel (id_gran, nombre, stock, precio) VALUES (?, ?, ?, ?)";
 
-            PreparedStatement preparedStatement = conection.connection.prepareStatement(query);
+            preparedStatement = conection.getConnection().prepareStatement(query);
             preparedStatement.setInt(1, productGranelModel.getIdProductGra());
             preparedStatement.setString(2, productGranelModel.getNameGra());
             preparedStatement.setInt(3, productGranelModel.getStock());
             preparedStatement.setBigDecimal(4, productGranelModel.getPrice());
 
             preparedStatement.executeUpdate();
-            preparedStatement.close();
         } catch (SQLException ex) {
             Logger.getLogger(ProductGranDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                conection.closeConnection(); // Cierra la conexión aquí
+            } catch (SQLException ex) {
+                Logger.getLogger(ProductGranDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
-
 
     @Override
     public ArrayList<ProductGranModel> Read() {
@@ -58,6 +67,7 @@ public class ProductGranDao implements Crud{
         } finally {
             try {
                 if (conection.connection != null) conection.connection.close();
+                conection.closeConnection();
             } catch (SQLException ex) {
                 Logger.getLogger(ProductGranDao.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -155,20 +165,21 @@ public class ProductGranDao implements Crud{
     }
     
     public boolean exists(String id) {
-    try {
-        String query = "SELECT COUNT(*) FROM productgranel WHERE id_gran = ?";
-        PreparedStatement ps = conection.connection.prepareStatement(query);
-        ps.setString(1, id);
-        ResultSet rs = ps.executeQuery();
+        conection.connectDatabase();
+        try {
+            String query = "SELECT COUNT(*) FROM productgranel WHERE id_gran = ?";
+            PreparedStatement ps = conection.connection.prepareStatement(query);
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
 
-        if (rs.next() && rs.getInt(1) > 0) {
-            return true; // Ya existe
+            if (rs.next() && rs.getInt(1) > 0) {
+                return true; // Ya existe
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductGranDao.class.getName()).log(Level.SEVERE, null, ex);
         }
-    } catch (SQLException ex) {
-        Logger.getLogger(ProductGranDao.class.getName()).log(Level.SEVERE, null, ex);
+        return false; // No existe
     }
-    return false; // No existe
-}
 
     
     

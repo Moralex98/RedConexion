@@ -32,14 +32,14 @@ public class ProductGraController implements ActionListener, MouseListener, KeyL
     }
 
     @Override
-public void actionPerformed(ActionEvent e) {
-    if (this.productGranView.btnSaveP == e.getSource()) {
+    public void actionPerformed(ActionEvent e) {
+        if (productGranView.btnSaveP == e.getSource()) {
 
-        // Desactivar temporalmente el botón para evitar múltiples clics
-        productGranView.btnSaveP.setEnabled(false);
-        int id = Integer.parseInt(productGranView.txtCodP.getText());
-        
-        try {
+            // Desactivar temporalmente el botón para evitar múltiples clics
+            productGranView.btnSaveP.setEnabled(false);
+            System.out.println("prueba 1");
+            int id = Integer.parseInt(productGranView.txtCodP.getText());
+
             // Verifica si el producto ya existe en la base de datos antes de insertarlo
             if (!productDao.exists(productGranView.txtCodP.getText())) {
                 ProductGranModel productGran = new ProductGranModel();
@@ -52,25 +52,20 @@ public void actionPerformed(ActionEvent e) {
                 productDao.Create();
 
                 show(); // Asegúrate de que este método no esté ejecutando otro evento
+                cleanData();
 
                 JOptionPane.showMessageDialog(null, "Registro exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            
+                    return;
             } else{
                 JOptionPane.showMessageDialog(null, "El producto ya existe", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            
 
-            
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Error al registrar producto: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            // Reactivar el botón después de la ejecución
-            productGranView.btnSaveP.setEnabled(true);
+        } else if (this.productGranView.btnUpdateP == e.getSource()) {
+
         }
     }
-}
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -103,6 +98,7 @@ public void actionPerformed(ActionEvent e) {
     @Override
     public void keyReleased(KeyEvent e) {
     }
+    
     private void cleanData() {
         productGranView.txtCodP.setText("");
         productGranView.txtNameP.setText("");
