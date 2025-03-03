@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ProductLitDao implements Crud{
-  private ProductLitModel productLiterModel;
+public class ProductLitDao {
+    ProductLitModel productLiterModel;
     Conection conection = new Conection();
 
-    
+    /*
     @Override
     public void Create() {
         conection.connectDatabase();
@@ -128,5 +128,5 @@ public class ProductLitDao implements Crud{
                 Logger.getLogger(ProductGranModel.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }  
+    }  */
 }

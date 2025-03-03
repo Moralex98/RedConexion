@@ -14,13 +14,7 @@ public class SaleDao implements Crud{
     @Override
     public void Create() {
         conection.connectDatabase();
-            try {
-                conection.connection.createStatement().execute(
-                        "INSERT INTO detalle_venta VALUES()"
-                );
-            }catch (SQLException ex) {
-               Logger.getLogger(SaleDao.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            
     }
 
     @Override

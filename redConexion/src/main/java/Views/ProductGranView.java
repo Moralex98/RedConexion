@@ -5,11 +5,9 @@ import Controllers.ProductGraController;
 
 
 public class ProductGranView extends javax.swing.JPanel {
-    ProductGraController productGra;
     
     public ProductGranView() {
         initComponents();
-        productGra = new ProductGraController(this);
     }
 
     @SuppressWarnings("unchecked")

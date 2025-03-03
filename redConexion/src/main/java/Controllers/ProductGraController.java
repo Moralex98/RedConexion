@@ -20,28 +20,29 @@ public class ProductGraController implements ActionListener, MouseListener, KeyL
     ProductGranDao productDao;
     DefaultTableModel model;
     ArrayList<ProductGranModel> productsGran;
+    
 
     public ProductGraController(ProductGranView productGranView) {
+        System.out.println("se instancio");
         this.productGranView = productGranView;
         productDao = new ProductGranDao();
         model = (DefaultTableModel) productGranView.tblProductGra.getModel();
-        this.productGranView.btnSaveP.addActionListener(this);
+        //this.productGranView.btnSaveP.addActionListener(this);
         this.productGranView.btnUpdateP.addActionListener(this);
         this.productGranView.btnDeleteP.addActionListener(this);
         this.productGranView.tblProductGra.addMouseListener(this);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (productGranView.btnSaveP == e.getSource()) {
-
+        
+        productGranView.btnSaveP.addActionListener( e -> {
+             if (productGranView.btnSaveP == e.getSource()) {
+                      
             // Desactivar temporalmente el botón para evitar múltiples clics
+            
             productGranView.btnSaveP.setEnabled(false);
-            System.out.println("prueba 1");
+            System.out.println("prueba 1" + e.getSource());
             int id = Integer.parseInt(productGranView.txtCodP.getText());
 
             // Verifica si el producto ya existe en la base de datos antes de insertarlo
-            if (!productDao.exists(productGranView.txtCodP.getText())) {
+            if (!productDao.exists(id)) {
                 ProductGranModel productGran = new ProductGranModel();
                 productGran.setIdProductGra(id);
                 productGran.setNameGra(productGranView.txtNameP.getText());
@@ -55,16 +56,19 @@ public class ProductGraController implements ActionListener, MouseListener, KeyL
                 cleanData();
 
                 JOptionPane.showMessageDialog(null, "Registro exitoso", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                    return;
+                return;
             } else{
-                JOptionPane.showMessageDialog(null, "El producto ya existe", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "El producto ya existe", "Error", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-
-
-        } else if (this.productGranView.btnUpdateP == e.getSource()) {
-
+        } 
         }
+        );
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+       
     }
 
     @Override
