@@ -6,7 +6,9 @@ Views/LoginView.class
 Views/ProductLitView.class
 Views/LoginView$1.class
 Models/SaleModel.class
+Views/ProductGranView$1.class
 Models/ProductGranModel.class
+Models/EmptyFields.class
 Views/ProductGranView.class
 Views/PrincipalView$1.class
 Models/Dao/ProductGranDao.class

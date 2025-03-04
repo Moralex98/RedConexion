@@ -1,8 +1,6 @@
 
 package Views;
 
-import Controllers.ProductGraController;
-
 
 public class ProductGranView extends javax.swing.JPanel {
     
@@ -37,16 +35,31 @@ public class ProductGranView extends javax.swing.JPanel {
 
         tblProductGra.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Codigo", "Nombre del producto", "Stock", "Precio"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(tblProductGra);
+        if (tblProductGra.getColumnModel().getColumnCount() > 0) {
+            tblProductGra.getColumnModel().getColumn(0).setResizable(false);
+            tblProductGra.getColumnModel().getColumn(0).setPreferredWidth(60);
+            tblProductGra.getColumnModel().getColumn(1).setResizable(false);
+            tblProductGra.getColumnModel().getColumn(1).setPreferredWidth(100);
+            tblProductGra.getColumnModel().getColumn(2).setResizable(false);
+            tblProductGra.getColumnModel().getColumn(2).setPreferredWidth(30);
+            tblProductGra.getColumnModel().getColumn(3).setResizable(false);
+            tblProductGra.getColumnModel().getColumn(3).setPreferredWidth(30);
+        }
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/lupa.png"))); // NOI18N
 

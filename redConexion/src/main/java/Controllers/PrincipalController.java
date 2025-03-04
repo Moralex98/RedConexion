@@ -35,7 +35,7 @@ public class PrincipalController implements ActionListener{
             ProductGranView productGranView = new ProductGranView();
             ProductGraController productGra = new ProductGraController(productGranView);
             ArrayList <ProductGranModel> productModel = productGranDao.Read();
-            productGra.showProductGra(productModel);
+            productGra.showProducts(productModel);
             principalView.showJpanel(productGranView);
         }
     }
