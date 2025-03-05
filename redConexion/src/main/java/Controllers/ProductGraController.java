@@ -1,7 +1,7 @@
 package Controllers;
 
 import Models.Dao.ProductGranDao;
-import Models.EmptyFields;
+import Models.Others.EmptyFields;
 import Models.ProductGranModel;
 import Views.ProductGranView;
 //import com.mysql.cj.result.Row;
@@ -191,41 +191,47 @@ public class ProductGraController implements ActionListener, MouseListener, KeyL
         }
     }
     private boolean emptyData() {
-        if (emptyFields.emptyFields(productGranView.txtCodP, "codigo")) {
+        // Validar Código
+        if (emptyFields.emptyFields(productGranView.txtCodP, "Código")) {
             productGranView.txtCodP.requestFocus();
             return false;
         }
-        String name = productGranView.txtNameP.getText();
+
+        // Validar Nombre
+        String name = productGranView.txtNameP.getText().trim();
         if (!name.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+")) {
             JOptionPane.showMessageDialog(null, "El nombre solo debe contener letras y espacios", "Error", JOptionPane.ERROR_MESSAGE);
             productGranView.txtNameP.requestFocus();
             return false;
         }
-        String stockText = productGranView.txtStockP.getText().trim(); // Elimina espacios en blanco
 
-        if (emptyFields.emptyFields(productGranView.txtStockP, "stock")) {
+        // Validar Stock (solo enteros)
+        String stockText = productGranView.txtStockP.getText().trim();
+        if (emptyFields.emptyFields(productGranView.txtStockP, "Stock")) {
+            productGranView.txtStockP.requestFocus();
+            return false;
+        }
+        if (!stockText.matches("\\d+")) { // Solo permite enteros positivos
+            JOptionPane.showMessageDialog(null, "El stock solo debe contener números enteros positivos", "Error", JOptionPane.ERROR_MESSAGE);
             productGranView.txtStockP.requestFocus();
             return false;
         }
 
-        if (!stockText.matches("\\d+")) {
-            JOptionPane.showMessageDialog(null, "El campo solo debe contener números", "Error", JOptionPane.ERROR_MESSAGE);
-            productGranView.txtStockP.requestFocus();
-            return false;
-        }
+        // Validar Precio (enteros o con decimales)
         String priceText = productGranView.txtPriceP.getText().trim();
-        
         if (emptyFields.emptyFields(productGranView.txtPriceP, "Precio")) {
             productGranView.txtPriceP.requestFocus();
             return false;
         }
-        if (!priceText.matches("\\d+")) {
-            JOptionPane.showMessageDialog(null, "El campo solo debe contener números", "Error", JOptionPane.ERROR_MESSAGE);
+        if (!priceText.matches("\\d+(\\.\\d+)?")) { // Permite enteros y decimales
+            JOptionPane.showMessageDialog(null, "El precio solo debe contener números enteros o decimales", "Error", JOptionPane.ERROR_MESSAGE);
             productGranView.txtPriceP.requestFocus();
             return false;
-        } 
+        }
+
         return true;
     }
+
     
     private void cleanData() {
         productGranView.txtCodP.setText("");

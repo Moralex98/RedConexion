@@ -1,4 +1,4 @@
-package Models;
+package Models.Others;
 
 import java.awt.*;
 import java.awt.event.*;

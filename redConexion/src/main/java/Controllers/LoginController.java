@@ -1,7 +1,7 @@
 
 package Controllers;
 
-import Models.LoginVerifier;
+import Models.Dao.LoginVerifier;
 import Views.Load;
 import Views.LoginView;
 import Views.PrincipalView;

@@ -1,6 +1,7 @@
 
-package Models;
+package Models.Dao;
 
+import Models.Dao.Conection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

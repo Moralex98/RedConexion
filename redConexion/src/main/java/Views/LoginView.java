@@ -2,7 +2,7 @@
 package Views;
 
 import Controllers.LoginController;
-import Models.TextPrompt;
+import Models.Others.TextPrompt;
 
 public class LoginView extends javax.swing.JFrame {
 LoginController loginController;

@@ -1,7 +1,6 @@
 
 package Models.Dao;
 
-import Models.Conection;
 import Models.ProductGranModel;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -109,9 +108,8 @@ public class ProductGranDao implements Crud{
             stmt.setInt(index, productGranelModel.getIdProductGra());
 
             stmt.executeUpdate();
-            System.out.println("Actualización exitosa.");
         } catch (SQLException ex) {
-            Logger.getLogger(ProductGranDao.class.getName()).log(Level.SEVERE, "Error al actualizar producto", ex);
+            Logger.getLogger(ProductGranDao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

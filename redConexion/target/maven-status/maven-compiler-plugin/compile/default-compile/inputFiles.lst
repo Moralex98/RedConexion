@@ -6,6 +6,7 @@
 /Users/freddymorales/Documents/unach/SextoSemestre/Modelos/RedConexionC/redConexion/src/main/java/Views/PrincipalView.java
 /Users/freddymorales/Documents/unach/SextoSemestre/Modelos/RedConexionC/redConexion/src/main/java/Models/ProductGranModel.java
 /Users/freddymorales/Documents/unach/SextoSemestre/Modelos/RedConexionC/redConexion/src/main/java/Models/TextPrompt.java
+/Users/freddymorales/Documents/unach/SextoSemestre/Modelos/RedConexionC/redConexion/src/main/java/Models/Dao/SaleDetailDao.java
 /Users/freddymorales/Documents/unach/SextoSemestre/Modelos/RedConexionC/redConexion/src/main/java/Models/LoginVerifier.java
 /Users/freddymorales/Documents/unach/SextoSemestre/Modelos/RedConexionC/redConexion/src/main/java/Models/Dao/SaleDao.java
 /Users/freddymorales/Documents/unach/SextoSemestre/Modelos/RedConexionC/redConexion/src/main/java/Models/Dao/ProductGranDao.java
@@ -13,9 +14,11 @@
 /Users/freddymorales/Documents/unach/SextoSemestre/Modelos/RedConexionC/redConexion/src/main/java/Controllers/ProductGraController.java
 /Users/freddymorales/Documents/unach/SextoSemestre/Modelos/RedConexionC/redConexion/src/main/java/Models/ProductLitModel.java
 /Users/freddymorales/Documents/unach/SextoSemestre/Modelos/RedConexionC/redConexion/src/main/java/Models/Conection.java
+/Users/freddymorales/Documents/unach/SextoSemestre/Modelos/RedConexionC/redConexion/src/main/java/Models/SaleDetailModel.java
 /Users/freddymorales/Documents/unach/SextoSemestre/Modelos/RedConexionC/redConexion/src/main/java/Models/Dao/ProductLitDao.java
 /Users/freddymorales/Documents/unach/SextoSemestre/Modelos/RedConexionC/redConexion/src/main/java/Views/LoginView.java
 /Users/freddymorales/Documents/unach/SextoSemestre/Modelos/RedConexionC/redConexion/src/main/java/Views/Load.java
 /Users/freddymorales/Documents/unach/SextoSemestre/Modelos/RedConexionC/redConexion/src/main/java/Views/ProductGranView.java
+/Users/freddymorales/Documents/unach/SextoSemestre/Modelos/RedConexionC/redConexion/src/main/java/Controllers/ProductLitController.java
 /Users/freddymorales/Documents/unach/SextoSemestre/Modelos/RedConexionC/redConexion/src/main/java/Controllers/PrincipalController.java
 /Users/freddymorales/Documents/unach/SextoSemestre/Modelos/RedConexionC/redConexion/src/main/java/Controllers/LoginController.java

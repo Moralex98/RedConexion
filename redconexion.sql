@@ -26,7 +26,7 @@ CREATE TABLE productgranel (
     precio DECIMAL(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE productliter (
+CREATE TABLE productlit (
     id_lit VARCHAR(25) PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     stock INT NOT NULL,
@@ -36,15 +36,18 @@ CREATE TABLE productliter (
 
 CREATE TABLE ventas (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    fecha DATE NOT NULL
+    fecha DATE NOT NULL,
+    total DECIMAL(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE detalle_ventas (
-    id INT AUTO_INCREMENT PRIMARY KEY,
     venta_id INT NOT NULL,
+    id INT NOT NULL AUTO_INCREMENT,  -- AUTO_INCREMENT como clave primaria
     id_lit VARCHAR(25) NOT NULL,
     cantidad INT NOT NULL,
-    total DECIMAL(10,2) NOT NULL,
+    subtotal DECIMAL(10,2) NOT NULL,
     FOREIGN KEY (venta_id) REFERENCES ventas(id) ON DELETE CASCADE,
-    FOREIGN KEY (id_lit) REFERENCES productliter(id_lit) ON DELETE CASCADE
+    FOREIGN KEY (id_lit) REFERENCES productlit(id_lit) ON DELETE CASCADE,
+    PRIMARY KEY (id),  -- Clave primaria simple
+    UNIQUE KEY (venta_id, id)  -- Restricción única para garantizar unicidad
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

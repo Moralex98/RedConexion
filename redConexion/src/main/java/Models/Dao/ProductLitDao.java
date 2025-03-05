@@ -1,8 +1,8 @@
 package Models.Dao;
 
-import Models.Conection;
-import Models.ProductGranModel;
 import Models.ProductLitModel;
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -10,123 +10,157 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ProductLitDao {
-    ProductLitModel productLiterModel;
-    Conection conection = new Conection();
+public class ProductLitDao implements Crud{
+     private ProductLitModel productLiterModel;
+    Conection connection = new Conection();
 
-    /*
+    
+    
     @Override
     public void Create() {
-        conection.connectDatabase();
+        connection.connectDatabase(); // Abre la conexión
+        PreparedStatement preparedStatement = null;
+
         try {
-            conection.connection.createStatement().execute(
-                    "INSERT INTO VALUES productliter VALUES("
-                    +productLiterModel.getIdProductLit()+",'"
-                    +productLiterModel.getNameLit()+"',"
-                    +productLiterModel.getStock()+","
-                    +productLiterModel.getPrice()+")"
-            );
+            String query = "INSERT INTO productgranel (id_gran, nombre, stock, precio) VALUES (?, ?, ?, ?)";
+
+            preparedStatement = connection.getConnection().prepareStatement(query);
+            preparedStatement.setInt(1, productLiterModel.getIdProductLit());
+            preparedStatement.setString(2, productLiterModel.getNameLit());
+            preparedStatement.setInt(3, productLiterModel.getStock());
+            preparedStatement.setBigDecimal(4, productLiterModel.getPrice());
+
+            preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(ProductGranDao.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-    }
-
-    @Override
-    public ArrayList<ProductLitModel> Read() {
-        ArrayList<ProductLitModel>productLiter = new ArrayList<>();
-        ProductLitModel product;
-        conection.connectDatabase();
-        try {
-            ResultSet result = conection.connection.createStatement().executeQuery("SELECT * FROM productgra");
-            while(result.next()) {
-                product = new ProductLitModel();
-                product.setIdProductLit(result.getInt("id_lit"));
-                product.setNameLit(result.getString("nombre"));
-                product.setStock(result.getInt("stock"));
-                product.setPrice(result.getFloat("Precio"));
-                productLiter.add(product);
-            }
-        }catch (SQLException ex) {
-            Logger.getLogger(ProductGranDao.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return productLiter;
     }
+        @Override
+        public ArrayList<ProductLitModel> Read() {
+            ArrayList<ProductLitModel> productLiterList = new ArrayList<>();
+            connection.connectDatabase();
+            String query = "SELECT * FROM productlit";
 
-    @Override
-    public void Update() {
-        conection.connectDatabase();
-        Statement stmt = null;
-        
-        try {
-            if (productLiterModel.getIdProductLit() != 0 && (productLiterModel.getNameLit() != null || (productLiterModel.getPrice() != 0 || (productLiterModel.getStock()) != 0))) {
-                StringBuilder query = new StringBuilder("UPDATE productliter SET ");
-                 
-                boolean firstField = true;
-                
+            try (Statement stmt = connection.getConnection().createStatement();
+                ResultSet result = stmt.executeQuery(query)) {
+
+                while (result.next()) {
+                    ProductLitModel product = new ProductLitModel();
+                    product.setIdProductLit(result.getInt("id_lit"));
+                    product.setNameLit(result.getString("nombre"));
+                    product.setStock(result.getInt("stock"));
+                    product.setPrice(result.getBigDecimal("precio"));
+                    productLiterList.add(product);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ProductLitDao.class.getName()).log(Level.SEVERE, "Error al leer productos", ex);
+            }
+            return productLiterList;
+        }  
+    
+        @Override
+        public void Update() {
+            connection.connectDatabase();
+
+            if (productLiterModel == null || productLiterModel.getIdProductLit() == 0) {
+                System.err.println("Error: No hay datos válidos para actualizar.");
+                return;
+            }
+
+            StringBuilder query = new StringBuilder("UPDATE productliter SET ");
+            boolean firstField = false;
+
+            if (productLiterModel.getNameLit() != null) {
+                query.append("nombre = ?");
+                firstField = true;
+            }
+
+            if (productLiterModel.getStock() > 0) {
+                if (firstField) query.append(", ");
+                query.append("stock = ?");
+                firstField = true;
+            }
+
+            if (productLiterModel.getPrice().compareTo(BigDecimal.ZERO) > 0) {
+                if (firstField) query.append(", ");
+                query.append("precio = ?");
+            }
+
+            query.append(" WHERE id_lit = ?");
+
+            try (PreparedStatement stmt = connection.getConnection().prepareStatement(query.toString())) {
+                int index = 1;
+
                 if (productLiterModel.getNameLit() != null) {
-                    query.append("nombre = '").append(productLiterModel.getNameLit()).append("'");
-                    firstField = false;
+                    stmt.setString(index++, productLiterModel.getNameLit());
                 }
-                
-                if (productLiterModel.getStock() != 0) {
-                    if (!firstField) query.append(", ");
-                    query.append("stock = '").append(productLiterModel.getStock()).append("'");
-                    firstField = false;
+
+                if (productLiterModel.getStock() > 0) {
+                    stmt.setInt(index++, productLiterModel.getStock());
                 }
-              
-                if (productLiterModel.getPrice() != 0) {
-                    if (!firstField) query.append(", ");
-                    query.append("precio = '").append((float) productLiterModel.getPrice()).append("'");
+
+                if (productLiterModel.getPrice().compareTo(BigDecimal.ZERO) > 0) {
+                    stmt.setBigDecimal(index++, productLiterModel.getPrice());
                 }
-                
-                query.append(" Where id_lit = ").append(productLiterModel.getIdProductLit());
-                
-                stmt = conection.connection.createStatement();
-                stmt.executeUpdate(query.toString());
-                System.out.println("Actualizacion exitosa");
-            }else {
-                System.err.println("Se requiere al menos un campo adicional para actualizar.");
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ProductGranDao.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                if (stmt != null) stmt.close();
-                    if (conection.connection != null) conection.connection.close();
+
+                stmt.setInt(index, productLiterModel.getIdProductLit());
+
+                stmt.executeUpdate();
+                System.out.println("Actualización exitosa.");
             } catch (SQLException ex) {
-                Logger.getLogger(ProductGranModel.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ProductLitDao.class.getName()).log(Level.SEVERE, "Error al actualizar producto", ex);
             }
         }
+        
+        @Override
+        public void delete() {
+            connection.connectDatabase();
+
+            if (productLiterModel == null || productLiterModel.getIdProductLit() == 0) {
+                System.err.println("Error: El ID es necesario para eliminar un registro.");
+                return;
+            }
+
+            String query = "DELETE FROM productliter WHERE id_lit = ?";
+
+            try (PreparedStatement stmt = connection.getConnection().prepareStatement(query)) {
+                stmt.setInt(1, productLiterModel.getIdProductLit());
+
+                int rowsAffected = stmt.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("Producto eliminado con éxito.");
+                } else {
+                    System.out.println("No se encontró el registro para eliminar.");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(ProductLitDao.class.getName()).log(Level.SEVERE, "Error al eliminar producto", ex);
+            }
+        }
+
+        public ProductLitModel getProductLiterModel() {
+            return productLiterModel;
+        }
+
+        public void setProductLiterModel(ProductLitModel productLiterModel) {
+            this.productLiterModel = productLiterModel;
+        }
+
+        public boolean exists(int id) {
+            connection.connectDatabase();
+            String query = "SELECT COUNT(*) FROM productliter WHERE id_lit = ?";
+
+        try (PreparedStatement ps = connection.getConnection().prepareStatement(query)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductLitDao.class.getName()).log(Level.SEVERE, "Error al verificar existencia", ex);
+        }
+        return false;
     }
 
-    @Override
-    public void delete() {
-        conection.connectDatabase();
-        Statement stmt= null;
-        try {
-            if (productLiterModel.getIdProductLit() != 0) {
-                String query = "DELETE FROM productgra WHERE id_gran = " + productLiterModel.getIdProductLit();
-                
-                stmt = conection.connection.createStatement();
-                int rowsAffected = stmt.executeUpdate(query);
-                
-                if (rowsAffected > 0) {
-                    System.out.println("Consulta eliminada con exito");
-                } else {
-                    System.out.println("No se encontro el regisro para eliminar");
-                }
-            } else {
-                System.err.println("El ID es necesario para eliminar un registro.");
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ProductGranDao.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                if (stmt != null) stmt.close();
-                    if (conection.connection != null) conection.connection.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(ProductGranModel.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }  */
 }
+   

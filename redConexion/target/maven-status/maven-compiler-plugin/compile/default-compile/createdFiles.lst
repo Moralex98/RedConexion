@@ -20,8 +20,10 @@ Models/Dao/ProductLitDao.class
 Controllers/ProductGraController.class
 Views/Load.class
 Views/SaleView$1.class
-Views/ProductLitView$1.class
 Models/TextPrompt$Show.class
 Models/TextPrompt.class
+Models/SaleDetailModel.class
 Models/ProductLitModel.class
+Controllers/ProductLitController.class
 Controllers/PrincipalController.class
+Models/Dao/SaleDetailDao.class
